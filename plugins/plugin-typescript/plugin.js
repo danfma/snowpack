@@ -2,12 +2,13 @@ const execa = require('execa');
 const npmRunPath = require('npm-run-path');
 const cwd = process.cwd();
 
-function typescriptPlugin(_, {args} = {}) {
+function typescriptPlugin(_, {args,allowTransformers} = {}) {
   return {
     name: '@snowpack/plugin-typescript',
     async run({isDev, log}) {
+      const command = allowTransformers ? 'ttsc' : 'tsc';
       const workerPromise = execa.command(
-        `tsc --noEmit ${isDev ? '--watch' : ''} ${args ? args : ''}`,
+        `${command} --noEmit ${isDev ? '--watch' : ''} ${args ? args : ''}`,
         {
           env: npmRunPath.env(),
           extendEnv: true,

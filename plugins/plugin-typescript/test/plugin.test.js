@@ -36,6 +36,12 @@ describe('plugin-typescript', () => {
     await p.run({isDev: false, log: jest.fn});
     expect(execaFn.mock.calls[0][0]).toContain('--foo bar');
   });
+  test('calls "ttsc" correctly with allowTransformers', async () => {
+    const p = plugin(undefined, {args: '--foo bar', allowTransformers: true});
+    await p.run({isDev: false, log: jest.fn});
+    expect(execaFn.mock.calls[0][0]).toContain('ttsc');
+    expect(execaFn.mock.calls[0][0]).toContain('--foo bar');
+  });
   test('handles tsc output', async () => {
     const logFn = jest.fn();
     const p = plugin();
